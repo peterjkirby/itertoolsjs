@@ -348,54 +348,100 @@ the actual implementation does not build up intermediate results in memory:
 	},
 
 itertools.repeat(object[, times])
+---------------------------------
+
 Make an iterator that returns object over and over again. Runs indefinitely unless the times argument is specified. Used as argument to imap() for invariant function parameters. Also used with izip() to create constant fields in a tuple record. Equivalent to:
 
-def repeat(object, times=None):
-    # repeat(10, 3) --> 10 10 10
-    if times is None:
-        while True:
-            yield object
-    else:
-        for i in xrange(times):
-            yield object
+	repeat: function(obj, times){
+		if(typeof times === 'undefined')
+			times = true;
+		
+		var iterator = new Iterator();
+		// @TODO
+		// Don't set items this way... Figure out better way to do this
+		iterator.items = obj;
+		if (times === true){
+			iterator.next = function(){
+				return this.items;
+			}
+			return iterator;
+		}
+		iterator.index = 0;
+		
+		iterator.next = function(){
+			if (this.index >= times)
+				return undefined;
+			
+			this.index++;
+			return this.items;
+		}
+		
+		return iterator;
+	},
+	
 A common use for repeat is to supply a stream of constant values to imap or zip:
 
->>>
->>> list(imap(pow, xrange(10), repeat(2)))
-[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 itertools.starmap(function, iterable)
-Make an iterator that computes the function using arguments obtained from the iterable. Used instead of imap() when argument parameters are already grouped in tuples from a single iterable (the data has been “pre-zipped”). The difference between imap() and starmap() parallels the distinction between function(a,b) and function(*c). Equivalent to:
+-------------------------------------
 
-def starmap(function, iterable):
-    # starmap(pow, [(2,5), (3,2), (10,3)]) --> 32 9 1000
-    for args in iterable:
-        yield function(*args)
-Changed in version 2.6: Previously, starmap() required the function arguments to be tuples. Now, any iterable is allowed.
+Make an iterator that computes the function using arguments
+obtained from the iterable. Used instead of imap() when argument 
+parameters are already grouped in tuples from a single iterable 
+(the data has been “pre-zipped”). The difference between imap() and 
+starmap() parallels the distinction between function(a,b) and function(*c).
 
+	starMap: function(fn, iterable){
+		
+		var iterator = new Iterator(iterable);
+		
+		iterator.next = function(){
+			if (this.index+1 >= this.items.length)
+				return undefined;
+
+			return fn.apply(this, this.items[++this.index]);
+		};
+		
+		return iterator;
+	},
+	
 itertools.takewhile(predicate, iterable)
-Make an iterator that returns elements from the iterable as long as the predicate is true. Equivalent to:
+----------------------------------------
 
-def takewhile(predicate, iterable):
-    # takewhile(lambda x: x<5, [1,4,6,4,1]) --> 1 4
-    for x in iterable:
-        if predicate(x):
-            yield x
-        else:
-            break
+Make an iterator that returns elements from the iterable as long as the predicate is true.
+
+	takeWhile: function(predicate, iterable){
+		
+		var iterator = new Iterator(iterable);
+		this.wasPredicateTrue = true; // starts true... probably not best to
+										// do that
+		
+		iterator.next = function(){
+			if (this.index+1 >= this.items.length && this.wasPredicateTrue)
+				return undefined;
+			
+			var rtnVal = this.items[++this.index];
+			
+			if(predicate(rtnVal))
+				return rtnVal;
+			
+			this.wasPredicateTrue = false;
+		};
+		
+		return iterator;		
+	},
+	
 itertools.tee(iterable[, n=2])
 Return n independent iterators from a single iterable. Equivalent to:
 
-def tee(iterable, n=2):
-    it = iter(iterable)
-    deques = [collections.deque() for i in range(n)]
-    def gen(mydeque):
-        while True:
-            if not mydeque:             # when the local deque is empty
-                newval = next(it)       # fetch a new value and
-                for d in deques:        # load it to all the deques
-                    d.append(newval)
-            yield mydeque.popleft()
-    return tuple(gen(d) for d in deques)
-Once tee() has made a split, the original iterable should not be used anywhere else; otherwise, the iterable could get advanced without the tee objects being informed.
+	tee: function(iterable){
+		//@TODO
+	},
+	
+Once tee() has made a split, the original iterable should not be used 
+anywhere else; otherwise, the iterable could get advanced without the
+tee objects being informed.
 
-This itertool may require significant auxiliary storage (depending on how much temporary data needs to be stored). In general, if one iterator uses most or all of the data before another iterator starts, it is faster to use list() instead of tee().
+This itertool may require significant auxiliary storage (depending on how 
+much temporary data needs to be stored). In general, if one iterator uses 
+most or all of the data before another iterator starts, it is faster to use 
+list() instead of tee().
