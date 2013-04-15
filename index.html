@@ -20,8 +20,7 @@
 			<a id="forkme_banner"
 				href="https://github.com/peterjkirby/itertoolsjs">View on GitHub</a>
 
-			<h1 id="project_title">Itertoolsjs</h1>
-			<h2 id="project_tagline">ItertoolsJs</h2>
+			<h1 id="project_title">ItertoolsJS</h1>
 
 			<section id="downloads">
 				<a class="zip_download_link"
@@ -36,40 +35,34 @@
 	<!-- MAIN CONTENT -->
 	<div id="main_content_wrap" class="outer">
 		<section id="main_content" class="inner">
-			<h3>Welcome to GitHub Pages.</h3>
 
-			<p>This automatic page generator is the easiest way to create
-				beautiful pages for all of your projects. Author your page content
-				here using GitHub Flavored Markdown, select a template crafted by a
-				designer, and publish. After your page is generated, you can check
-				out the new branch:</p>
+			<p>ItertoolsJS is inspired by the python Itertools library at
+				http://docs.python.org/2/library/itertools.html</p>
+			<p>I am in the process of optimizing and adding more
+				functionality.</p>
+			<p>The majority of the documentation at this time is an exact
+				replica of the python Itertools documentation.</p>
+			<p>I will correct the documentation once I have finished the
+				ItertoolsJS library</p>
+
+			<p>
+				Feel free to check out my website at <a href="http://peterkirby.me">http://www.peterkirby.me</a>
+			</p>
+
+
+			<p>The following module functions all construct and return
+				iterators. Some provide streams of infinite length, so they should
+				only be accessed by functions or loops that truncate the stream.</p>
+
+			<h2>itertools.chain(iterables)</h2>
+			<p>Make an iterator that returns elements from the first iterable
+				until it is exhausted, then proceeds to the next iterable, until all
+				of the iterables are exhausted. Used for treating consecutive
+				sequences as a single sequence. `iterables` should be an array of
+				iterables.</p>
 
 			<pre>
-				<code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code>
-			</pre>
-				
-			
-			<h1>itertoolsJS</h1>
-			
-			<p>ItertoolsJS is inspired by the python Itertools library at http://docs.python.org/2/library/itertools.html</p>
-			<p>I am in the process of optimizing and adding more functionality.</p>
-			<p>The majority of the documentation at this time is an exact replica of the python Itertools documentation.</p>
-			<p>I will correct the documentation once I have finished the ItertoolsJS library</p>
-			<p>The following module functions all construct and return iterators.
-			Some provide streams of infinite length, so they should only be accessed by functions 
-			or loops that truncate the stream.</p>
-			
-			<h2>itertools.chain(iterables)</h2>
-			<p>
-Make an iterator that returns elements from the first iterable until 
-it is exhausted, then proceeds to the next iterable, until all of the 
-iterables are exhausted. Used for treating consecutive sequences as a single 
-sequence. `iterables` should be an array of iterables.</p>
-
-<pre><code>
+				<code>
 chain: function(iterables){
 	var items = [];	
     for (var i in iterables){
@@ -82,16 +75,20 @@ chain: function(iterables){
 	</code>
 </pre>
 
-<h2>itertools.combinations(iterable, r)</h2>
-<p>Return r length subsequences of elements from the input iterable.</p>
+			<h2>itertools.combinations(iterable, r)</h2>
+			<p>Return r length subsequences of elements from the input
+				iterable.</p>
 
-<p>Combinations are emitted in lexicographic sort order. So, if the input iterable
-is sorted, the combination will be produced in sorted order.</p>
+			<p>Combinations are emitted in lexicographic sort order. So, if
+				the input iterable is sorted, the combination will be produced in
+				sorted order.</p>
 
-<p>Elements are treated as unique based on their position, not on their value. 
-So if the input elements are unique, there will be no repeat values in each combination.</p>
+			<p>Elements are treated as unique based on their position, not on
+				their value. So if the input elements are unique, there will be no
+				repeat values in each combination.</p>
 
-<pre><code>
+			<pre>
+				<code>
 combinations: function(iterable, r){
 	
 	var iterator = new Iterator(iterable),
@@ -107,16 +104,18 @@ combinations: function(iterable, r){
 	
 	return results;		
 },
-</code></pre>
-    
-        
-<h2>itertools.count([start, step])</h2>
+</code>
+			</pre>
 
-<p>Make an iterator that returns evenly spaced values starting with n. Often used 
-as an argument to imap() to generate consecutive data points. Also, used with
-izip() to add sequence numbers. </p>
 
-<pre><code>
+			<h2>itertools.count([start, step])</h2>
+
+			<p>Make an iterator that returns evenly spaced values starting
+				with n. Often used as an argument to imap() to generate consecutive
+				data points. Also, used with izip() to add sequence numbers.</p>
+
+			<pre>
+				<code>
 count: function(start, step){
 	if (typeof start === 'undefined')
 		start = 0;
@@ -137,15 +136,18 @@ count: function(start, step){
 	return iterator;		
 },
 
-</code></pre>
+</code>
+			</pre>
 
 
-<h2>itertools.cycle(iterable)</h2>
+			<h2>itertools.cycle(iterable)</h2>
 
-<p>Make an iterator returning elements from the iterable and saving a copy of each. 
-When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely. </p>
+			<p>Make an iterator returning elements from the iterable and
+				saving a copy of each. When the iterable is exhausted, return
+				elements from the saved copy. Repeats indefinitely.</p>
 
-<pre><code>
+			<pre>
+				<code>
 cycle: function(iterable){
 	var iterator = new Iterator(iterable, true);
 	
@@ -159,55 +161,66 @@ cycle: function(iterable){
 	
 	return iterator;
 },
-</code></pre>
+</code>
+			</pre>
 
-<p>Note, this member of the toolkit may require significant auxiliary storage (depending on the length of the iterable).</p>
+			<p>Note, this member of the toolkit may require significant
+				auxiliary storage (depending on the length of the iterable).</p>
 
-<h2>itertools.dropWhile(predicate, iterable)</h2>
+			<h2>itertools.dropWhile(predicate, iterable)</h2>
 
-<p>Make an iterator that drops elements from the iterable as long as the predicate
-is true; afterwards, returns every element. Note, the iterator does not produce any 
-output until the predicate first becomes false, so it may have a lengthy start-up time.</p>
+			<p>Make an iterator that drops elements from the iterable as long
+				as the predicate is true; afterwards, returns every element. Note,
+				the iterator does not produce any output until the predicate first
+				becomes false, so it may have a lengthy start-up time.</p>
 
-<pre><code>
+			<pre>
+				<code>
 dropWhile: function(predicate, iterable){
 	//@TODO
 },
-</code></pre>
-        
-        
-<h2>itertools.groupBy(iterable[, key])</h2>
+</code>
+			</pre>
 
-<p>Make an iterator that returns consecutive keys and groups from the iterable. 
-The key is a function computing a key value for each element. If not specified
-or is None, key defaults to an identity function and returns the element unchanged. 
-Generally, the iterable needs to already be sorted on the same key function.</p>
 
-<p>The operation of groupby() is similar to the uniq filter in Unix. It generates 
-a break or new group every time the value of the key function changes (which is 
-why it is usually necessary to have sorted the data using the same key function). 
-That behavior differs from SQL’s GROUP BY which aggregates common elements regardless 
-of their input order.</p>
+			<h2>itertools.groupBy(iterable[, key])</h2>
 
-<p>The returned group is itself an iterator that shares the underlying iterable with 
-groupby(). Because the source is shared, when the groupby() object is advanced, the 
-previous group is no longer visible. So, if that data is needed later, it should be 
-stored as a list.</p>
+			<p>Make an iterator that returns consecutive keys and groups from
+				the iterable. The key is a function computing a key value for each
+				element. If not specified or is None, key defaults to an identity
+				function and returns the element unchanged. Generally, the iterable
+				needs to already be sorted on the same key function.</p>
 
-<pre><code>
+			<p>The operation of groupby() is similar to the uniq filter in
+				Unix. It generates a break or new group every time the value of the
+				key function changes (which is why it is usually necessary to have
+				sorted the data using the same key function). That behavior differs
+				from SQL’s GROUP BY which aggregates common elements regardless of
+				their input order.</p>
+
+			<p>The returned group is itself an iterator that shares the
+				underlying iterable with groupby(). Because the source is shared,
+				when the groupby() object is advanced, the previous group is no
+				longer visible. So, if that data is needed later, it should be
+				stored as a list.</p>
+
+			<pre>
+				<code>
 	groupBy: function(){
 		//@TODO
 	},	
-</code></pre>
+</code>
+			</pre>
 
 
-<h2>itertools.iFilter(predicate, iterable)</h2>
+			<h2>itertools.iFilter(predicate, iterable)</h2>
 
-<p>Make an iterator that filters elements from iterable returning only those 
-for which the predicate is True. If predicate is None, return the items that 
-are true.</p> 
+			<p>Make an iterator that filters elements from iterable returning
+				only those for which the predicate is True. If predicate is None,
+				return the items that are true.</p>
 
-<pre><code>
+			<pre>
+				<code>
 iFilter: function(predicate, iterable){
 	if (typeof predicate === 'undefined')
 		predicate = function(x){return Boolean(x)};
@@ -233,52 +246,65 @@ iFilter: function(predicate, iterable){
 	
 	return iterator;
 },
-</code></pre>
+</code>
+			</pre>
 
-<h2>itertools.iFilterFalse(predicate, iterable)</h2>
+			<h2>itertools.iFilterFalse(predicate, iterable)</h2>
 
-<p>Make an iterator that filters elements from iterable returning only
-those for which the predicate is False. If predicate is None, return 
-the items that are false. </p>
+			<p>Make an iterator that filters elements from iterable returning
+				only those for which the predicate is False. If predicate is None,
+				return the items that are false.</p>
 
-<pre><code>
+			<pre>
+				<code>
 iFilterFalse: function(){
 	//@TODO
 },
-</code></pre>
+</code>
+			</pre>
 
 
-<h2>itertools.iMap(function, *iterables)</h2>
+			<h2>itertools.iMap(function, *iterables)</h2>
 
-<p>
-Make an iterator that computes the function using arguments from each of the iterables. 
-If function is set to None, then imap() returns the arguments as a tuple. Like map() but 
-stops when the shortest iterable is exhausted instead of filling in None for shorter iterables.</p>
+			<p>Make an iterator that computes the function using arguments
+				from each of the iterables. If function is set to None, then imap()
+				returns the arguments as a tuple. Like map() but stops when the
+				shortest iterable is exhausted instead of filling in None for
+				shorter iterables.</p>
 
-<p>The reason for the difference is that infinite iterator arguments are typically 
-an error for map() (because the output is fully evaluated) but represent a common and 
-useful way of supplying arguments to imap(). </p>
+			<p>The reason for the difference is that infinite iterator
+				arguments are typically an error for map() (because the output is
+				fully evaluated) but represent a common and useful way of supplying
+				arguments to imap().</p>
 
-<pre><code>
+			<pre>
+				<code>
 iMap: function(){
 	//@TODO
 },	
-</code></pre>
+</code>
+			</pre>
 
-	
-<h2>itertools.iSlice(iterable, stop)<br />
-itertools.iSlice(iterable, start, stop[, step])</h2>
 
-<p>Make an iterator that returns selected elements from the iterable. If start is non-zero, 
-then elements from the iterable are skipped until start is reached. Afterward, elements are 
-returned consecutively unless step is set higher than one which results in items being skipped. 
-If stop is None, then iteration continues until the iterator is exhausted, if at all; otherwise,
- it stops at the specified position. Unlike regular slicing, islice() does not support negative
-  values for start, stop, or step. Can be used to extract related fields from data where the 
-  internal structure has been flattened (for example, a multi-line report may list a name field
-   on every third line). </p>
+			<h2>
+				itertools.iSlice(iterable, stop)<br /> itertools.iSlice(iterable,
+				start, stop[, step])
+			</h2>
 
-<pre><code>
+			<p>Make an iterator that returns selected elements from the
+				iterable. If start is non-zero, then elements from the iterable are
+				skipped until start is reached. Afterward, elements are returned
+				consecutively unless step is set higher than one which results in
+				items being skipped. If stop is None, then iteration continues until
+				the iterator is exhausted, if at all; otherwise, it stops at the
+				specified position. Unlike regular slicing, islice() does not
+				support negative values for start, stop, or step. Can be used to
+				extract related fields from data where the internal structure has
+				been flattened (for example, a multi-line report may list a name
+				field on every third line).</p>
+
+			<pre>
+				<code>
 iSlice: function(iterable, start_or_stop, stop, step){
 	if (typeof step === 'undefined')
 		step = 1;
@@ -322,45 +348,57 @@ iSlice: function(iterable, start_or_stop, stop, step){
 },
 
 
-</code></pre>
+</code>
+			</pre>
 
-<p>If start is None, then iteration starts at zero. If step is None, then the step defaults to one.</p>
+			<p>If start is None, then iteration starts at zero. If step is
+				None, then the step defaults to one.</p>
 
-<h2>itertools.iZip(iterables)</h2>
+			<h2>itertools.iZip(iterables)</h2>
 
 
-<p>Make an iterator that aggregates elements from each of the iterables. 
-Like zip() except that it returns an iterator instead of a list. Used 
-for lock-step iteration over several iterables at a time. </p>
+			<p>Make an iterator that aggregates elements from each of the
+				iterables. Like zip() except that it returns an iterator instead of
+				a list. Used for lock-step iteration over several iterables at a
+				time.</p>
 
-<pre><code>
+			<pre>
+				<code>
 iZip: function(){
 	//@TODO
 },
-</code></pre>
+</code>
+			</pre>
 
-<p>The left-to-right evaluation order of the iterables is guaranteed. This makes possible an idiom for
- clustering a data series into n-length groups using izip(*[iter(s)]*n).</p>
+			<p>The left-to-right evaluation order of the iterables is
+				guaranteed. This makes possible an idiom for clustering a data
+				series into n-length groups using izip(*[iter(s)]*n).</p>
 
-<p>
-izip() should only be used with unequal length inputs when you don’t care about trailing, unmatched values from the longer iterables. If those values are important, use izip_longest() instead.
-</p>
+			<p>izip() should only be used with unequal length inputs when you
+				don’t care about trailing, unmatched values from the longer
+				iterables. If those values are important, use izip_longest()
+				instead.</p>
 
 
-<h2>itertools.permutations(iterable)</h2>
+			<h2>itertools.permutations(iterable)</h2>
 
-<p>Return successive r length permutations of elements in the iterable.</p>
+			<p>Return successive r length permutations of elements in the
+				iterable.</p>
 
-<p>If r is not specified or is None, then r defaults to the length of the
-iterable and all possible full-length permutations are generated.</p>
+			<p>If r is not specified or is None, then r defaults to the
+				length of the iterable and all possible full-length permutations are
+				generated.</p>
 
-<p>Permutations are emitted in lexicographic sort order. So, if the input
-iterable is sorted, the permutation tuples will be produced in sorted order.</p>
+			<p>Permutations are emitted in lexicographic sort order. So, if
+				the input iterable is sorted, the permutation tuples will be
+				produced in sorted order.</p>
 
-<p>Elements are treated as unique based on their position, not on their value.
-So if the input elements are unique, there will be no repeat values in each permutation.</p>
+			<p>Elements are treated as unique based on their position, not on
+				their value. So if the input elements are unique, there will be no
+				repeat values in each permutation.</p>
 
-<pre><code>
+			<pre>
+				<code>
 // This is an older piece of code... I'm reworking it now
 permutations: function(sequence){
 	var isNumber = false,
@@ -416,40 +454,47 @@ _permute: function(sequence, level, outArr){
 	}
 	sequence[l-1] = c;
 },
-</code></pre>
+</code>
+			</pre>
 
-<h2>itertools.product(*iterables[, repeat])</h2>
+			<h2>itertools.product(*iterables[, repeat])</h2>
 
-<p>Cartesian product of input iterables.</p>
+			<p>Cartesian product of input iterables.</p>
 
-<p>Equivalent to nested for-loops in a generator expression. 
-For example, product(A, B) returns the same as ((x,y) for x in A for y in B).</p>
+			<p>Equivalent to nested for-loops in a generator expression. For
+				example, product(A, B) returns the same as ((x,y) for x in A for y
+				in B).</p>
 
-<p>The nested loops cycle like an odometer with the rightmost 
-element advancing on every iteration. This pattern creates 
-a lexicographic ordering so that if the input’s iterables are 
-sorted, the product tuples are emitted in sorted order.</p>
+			<p>The nested loops cycle like an odometer with the rightmost
+				element advancing on every iteration. This pattern creates a
+				lexicographic ordering so that if the input’s iterables are sorted,
+				the product tuples are emitted in sorted order.</p>
 
-<p>To compute the product of an iterable with itself, specify the
-number of repetitions with the optional repeat keyword argument.
-For example, product(A, repeat=4) means the same as product(A, A, A, A).</p>
+			<p>To compute the product of an iterable with itself, specify the
+				number of repetitions with the optional repeat keyword argument. For
+				example, product(A, repeat=4) means the same as product(A, A, A, A).</p>
 
-<p>This function is equivalent to the following code, except that
-the actual implementation does not build up intermediate results in memory: </p>
+			<p>This function is equivalent to the following code, except that
+				the actual implementation does not build up intermediate results in
+				memory:</p>
 
-<pre><code>
+			<pre>
+				<code>
 product: function(){
 	//@TODO
 },
-</code></pre>	
+</code>
+			</pre>
 
-<h2>itertools.repeat(object[, times])</h2>
+			<h2>itertools.repeat(object[, times])</h2>
 
-<p>Make an iterator that returns object over and over again. Runs indefinitely unless 
-the times argument is specified. Used as argument to imap() for invariant function parameters. 
-Also used with izip() to create constant fields in a tuple record.</p>
+			<p>Make an iterator that returns object over and over again. Runs
+				indefinitely unless the times argument is specified. Used as
+				argument to imap() for invariant function parameters. Also used with
+				izip() to create constant fields in a tuple record.</p>
 
-<pre><code>
+			<pre>
+				<code>
 repeat: function(obj, times){
 	if(typeof times === 'undefined')
 		times = true;
@@ -476,20 +521,24 @@ repeat: function(obj, times){
 	
 	return iterator;
 },
-</code></pre>
+</code>
+			</pre>
 
-<p>A common use for repeat is to supply a stream of constant values to imap or zip:</p>
+			<p>A common use for repeat is to supply a stream of constant
+				values to imap or zip:</p>
 
 
-<h2>itertools.starMap(function, iterable)</h2>
+			<h2>itertools.starMap(function, iterable)</h2>
 
-<p>Make an iterator that computes the function using arguments
-obtained from the iterable. Used instead of imap() when argument 
-parameters are already grouped in tuples from a single iterable 
-(the data has been “pre-zipped”). The difference between imap() and 
-starmap() parallels the distinction between function(a,b) and function(*c).</p>
+			<p>Make an iterator that computes the function using arguments
+				obtained from the iterable. Used instead of imap() when argument
+				parameters are already grouped in tuples from a single iterable (the
+				data has been “pre-zipped”). The difference between imap() and
+				starmap() parallels the distinction between function(a,b) and
+				function(*c).</p>
 
-<pre><code>
+			<pre>
+				<code>
 starMap: function(fn, iterable){
 	
 	var iterator = new Iterator(iterable);
@@ -503,14 +552,17 @@ starMap: function(fn, iterable){
 	
 	return iterator;
 },
-</code></pre>
+</code>
+			</pre>
 
 
-<h2>itertools.takeWhile(predicate, iterable)</h2>
+			<h2>itertools.takeWhile(predicate, iterable)</h2>
 
-<p>Make an iterator that returns elements from the iterable as long as the predicate is true.</p>
+			<p>Make an iterator that returns elements from the iterable as
+				long as the predicate is true.</p>
 
-<pre><code>
+			<pre>
+				<code>
 takeWhile: function(predicate, iterable){
 	
 	var iterator = new Iterator(iterable);
@@ -531,81 +583,30 @@ takeWhile: function(predicate, iterable){
 	
 	return iterator;		
 },
-</code></pre>
+</code>
+			</pre>
 
-	
-<h2>itertools.tee(iterable[, n=2])</h2>
-<p>Return n independent iterators from a single iterable. </p>
 
-<pre><code>
+			<h2>itertools.tee(iterable[, n=2])</h2>
+			<p>Return n independent iterators from a single iterable.</p>
+
+			<pre>
+				<code>
 tee: function(iterable){
 	//@TODO
 },
-</code></pre>
+</code>
+			</pre>
 
-<p>Once tee() has made a split, the original iterable should not be used 
-anywhere else; otherwise, the iterable could get advanced without the
-tee objects being informed.</p>
+			<p>Once tee() has made a split, the original iterable should not
+				be used anywhere else; otherwise, the iterable could get advanced
+				without the tee objects being informed.</p>
 
-<p>
-This itertool may require significant auxiliary storage (depending on how 
-much temporary data needs to be stored). In general, if one iterator uses 
-most or all of the data before another iterator starts, it is faster to use 
-list() instead of tee().</p>
-			
+			<p>This itertool may require significant auxiliary storage
+				(depending on how much temporary data needs to be stored). In
+				general, if one iterator uses most or all of the data before another
+				iterator starts, it is faster to use list() instead of tee().</p>
 
-
-
-
-			<p>If you're using the GitHub for Mac, simply sync your
-				repository and you'll see the new branch.</p>
-
-			<h3>Designer Templates</h3>
-
-			<p>We've crafted some handsome templates for you to use. Go ahead
-				and continue to layouts to browse through them. You can easily go
-				back to edit your page before publishing. After publishing your
-				page, you can revisit the page generator and switch to another
-				theme. Your Page content will be preserved if it remained markdown
-				format.</p>
-
-			<h3>Rather Drive Stick?</h3>
-
-			<p>
-				If you prefer to not use the automatic generator, push a branch
-				named
-				<code>gh-pages</code>
-				to your repository to create a page manually. In addition to
-				supporting regular HTML content, GitHub Pages support Jekyll, a
-				simple, blog aware static site generator written by our own Tom
-				Preston-Werner. Jekyll makes it easy to create site-wide headers and
-				footers without having to copy them across every page. It also
-				offers intelligent blog support and other advanced templating
-				features.
-			</p>
-
-			<h3>Authors and Contributors</h3>
-
-			<p>
-				You can <a href="https://github.com/blog/821" class="user-mention">@mention</a>
-				a GitHub username to generate a link to their profile. The resulting
-				<code>&lt;a&gt;</code>
-				element will link to the contributor's GitHub Profile. For example:
-				In 2007, Chris Wanstrath (<a href="https://github.com/defunkt"
-					class="user-mention">@defunkt</a>), PJ Hyett (<a
-					href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>),
-				and Tom Preston-Werner (<a href="https://github.com/mojombo"
-					class="user-mention">@mojombo</a>) founded GitHub.
-			</p>
-
-			<h3>Support or Contact</h3>
-
-			<p>
-				Having trouble with Pages? Check out the documentation at <a
-					href="http://help.github.com/pages">http://help.github.com/pages</a>
-				or contact <a href="mailto:support@github.com">support@github.com</a>
-				and we’ll help you sort it out.
-			</p>
 		</section>
 	</div>
 
@@ -618,6 +619,14 @@ list() instead of tee().</p>
 			<p>
 				Published with <a href="http://pages.github.com">GitHub Pages</a>
 			</p>
+			
+			<nav class="socia-icons-wrapper">
+			<ul class="social-icons">
+			<li><a href="http://www.facebook.com/peterjkirby"><img src="/images/facebook.png" alt="facebook" /></a></li>
+			<li><a href="http://www.twitter.com/peterjkirby"><img src="/images/twitter.png" alt="twitter" /></a></li>
+			<li><a href="http://www.facebook.com/peterjkirby"><img src="/images/facebook.png" alt="facebook" /></a></li>
+			</ul>
+			</nav>
 		</footer>
 	</div>
 
