@@ -184,144 +184,168 @@ itertools.imap(function, *iterables)
 ------------------------------------
 Make an iterator that computes the function using arguments from each of the iterables. If function is set to None, then imap() returns the arguments as a tuple. Like map() but stops when the shortest iterable is exhausted instead of filling in None for shorter iterables. The reason for the difference is that infinite iterator arguments are typically an error for map() (because the output is fully evaluated) but represent a common and useful way of supplying arguments to imap(). Equivalent to:
 
-def imap(function, *iterables):
-    # imap(pow, (2,3,10), (5,2,3)) --> 32 9 1000
-    iterables = map(iter, iterables)
-    while True:
-        args = [next(it) for it in iterables]
-        if function is None:
-            yield tuple(args)
-        else:
-            yield function(*args)
+	iMap: function(){
+		//@TODO
+	},	
+	
 itertools.islice(iterable, stop)
 itertools.islice(iterable, start, stop[, step])
 Make an iterator that returns selected elements from the iterable. If start is non-zero, then elements from the iterable are skipped until start is reached. Afterward, elements are returned consecutively unless step is set higher than one which results in items being skipped. If stop is None, then iteration continues until the iterator is exhausted, if at all; otherwise, it stops at the specified position. Unlike regular slicing, islice() does not support negative values for start, stop, or step. Can be used to extract related fields from data where the internal structure has been flattened (for example, a multi-line report may list a name field on every third line). Equivalent to:
 
-def islice(iterable, *args):
-    # islice('ABCDEFG', 2) --> A B
-    # islice('ABCDEFG', 2, 4) --> C D
-    # islice('ABCDEFG', 2, None) --> C D E F G
-    # islice('ABCDEFG', 0, None, 2) --> A C E G
-    s = slice(*args)
-    it = iter(xrange(s.start or 0, s.stop or sys.maxint, s.step or 1))
-    nexti = next(it)
-    for i, element in enumerate(iterable):
-        if i == nexti:
-            yield element
-            nexti = next(it)
+	iSlice: function(iterable, start_or_stop, stop, step){
+		if (typeof step === 'undefined')
+			step = 1;
+		
+		if (typeof start_or_stop === 'undefined' || start_or_stop === null)
+			start_or_stop = -1;
+		
+		var iterator = new Iterator(iterable);
+		
+		if(typeof stop === 'undefined'){
+			stop = start_or_stop;
+			
+			iterator.next = function(){
+				if (this.index+1 >= this.items.length || this.index+1 >= stop)
+					return undefined;
+				
+				return this.items[++this.index];
+				
+			}
+		} else if (stop === null){
+			iterator.index = start_or_stop-step;
+			iterator.next = function(){
+				if(this.index+1 >= this.items.length)
+					return undefined;		
+				
+				this.index += step
+				return this.items[this.index];
+			};	
+		} else {
+			iterator.index = start_or_stop-step;
+			iterator.next = function(){
+				if (this.index+1 >= this.items.length || this.index+1 >= stop)
+					return undefined;
+					
+				this.index += step;
+				return this.items[this.index];
+			};
+		}
+		
+		return iterator;
+	},
+	
 If start is None, then iteration starts at zero. If step is None, then the step defaults to one.
 
-Changed in version 2.5: accept None values for default start and step.
+itertools.izip(iterables)
+-------------------------
 
-itertools.izip(*iterables)
-Make an iterator that aggregates elements from each of the iterables. Like zip() except that it returns an iterator instead of a list. Used for lock-step iteration over several iterables at a time. Equivalent to:
+Make an iterator that aggregates elements from each of the iterables. 
+Like zip() except that it returns an iterator instead of a list. Used 
+for lock-step iteration over several iterables at a time. 
 
-def izip(*iterables):
-    # izip('ABCD', 'xy') --> Ax By
-    iterators = map(iter, iterables)
-    while iterators:
-        yield tuple(map(next, iterators))
-Changed in version 2.4: When no iterables are specified, returns a zero length iterator instead of raising a TypeError exception.
+	iZip: function(){
+		//@TODO
+	},
+	
 
 The left-to-right evaluation order of the iterables is guaranteed. This makes possible an idiom for clustering a data series into n-length groups using izip(*[iter(s)]*n).
 
 izip() should only be used with unequal length inputs when you don’t care about trailing, unmatched values from the longer iterables. If those values are important, use izip_longest() instead.
 
-itertools.izip_longest(*iterables[, fillvalue])
-Make an iterator that aggregates elements from each of the iterables. If the iterables are of uneven length, missing values are filled-in with fillvalue. Iteration continues until the longest iterable is exhausted. Equivalent to:
 
-class ZipExhausted(Exception):
-    pass
-
-def izip_longest(*args, **kwds):
-    # izip_longest('ABCD', 'xy', fillvalue='-') --> Ax By C- D-
-    fillvalue = kwds.get('fillvalue')
-    counter = [len(args) - 1]
-    def sentinel():
-        if not counter[0]:
-            raise ZipExhausted
-        counter[0] -= 1
-        yield fillvalue
-    fillers = repeat(fillvalue)
-    iterators = [chain(it, sentinel(), fillers) for it in args]
-    try:
-        while iterators:
-            yield tuple(map(next, iterators))
-    except ZipExhausted:
-        pass
-If one of the iterables is potentially infinite, then the izip_longest() function should be wrapped with something that limits the number of calls (for example islice() or takewhile()). If not specified, fillvalue defaults to None.
-
-New in version 2.6.
-
-itertools.permutations(iterable[, r])
+itertools.permutations(iterable)
+-------------------------------------
 Return successive r length permutations of elements in the iterable.
 
-If r is not specified or is None, then r defaults to the length of the iterable and all possible full-length permutations are generated.
+If r is not specified or is None, then r defaults to the length of the
+iterable and all possible full-length permutations are generated.
 
-Permutations are emitted in lexicographic sort order. So, if the input iterable is sorted, the permutation tuples will be produced in sorted order.
+Permutations are emitted in lexicographic sort order. So, if the input
+iterable is sorted, the permutation tuples will be produced in sorted order.
 
-Elements are treated as unique based on their position, not on their value. So if the input elements are unique, there will be no repeat values in each permutation.
+Elements are treated as unique based on their position, not on their value.
+So if the input elements are unique, there will be no repeat values in each permutation.
 
-Equivalent to:
+	// This is an older piece of code... I'm reworking it now
+	permutations: function(sequence){
+		var isNumber = false,
+			n = 0,
+			results = [];
+		
+		if (typeof sequence == 'number'){
+			sequence = sequence.toString();
+			isNumber = true;
+		}
+		
+		try{
+			n = sequence.length;		
+		} catch (e){
+			throw "sequence is not permuable";
+		}
+			
+		if (n == 0 || n == 1)
+			return [sequence];
+		
+		this._permute(sequence.split('').sort(), 0, results);	
+		
+		for (var perm in results){
+			results[perm] = results[perm].join('');
+			if (isNumber)
+				results[perm] = parseFloat(results[perm]);				
+		}
+		
+		return results;
+	},
 
-def permutations(iterable, r=None):
-    # permutations('ABCD', 2) --> AB AC AD BA BC BD CA CB CD DA DB DC
-    # permutations(range(3)) --> 012 021 102 120 201 210
-    pool = tuple(iterable)
-    n = len(pool)
-    r = n if r is None else r
-    if r > n:
-        return
-    indices = range(n)
-    cycles = range(n, n-r, -1)
-    yield tuple(pool[i] for i in indices[:r])
-    while n:
-        for i in reversed(range(r)):
-            cycles[i] -= 1
-            if cycles[i] == 0:
-                indices[i:] = indices[i+1:] + indices[i:i+1]
-                cycles[i] = n - i
-            else:
-                j = cycles[i]
-                indices[i], indices[-j] = indices[-j], indices[i]
-                yield tuple(pool[i] for i in indices[:r])
-                break
-        else:
-            return
-The code for permutations() can be also expressed as a subsequence of product(), filtered to exclude entries with repeated elements (those from the same position in the input pool):
+	_permute: function(sequence, level, outArr){
+	
+		var l = sequence.length;
+		var c = null;
+		
+		if (l == level){
+			outArr.push(this._copy(sequence));
+			return
+		}
+			
+		for (var i = level; i < sequence.length; i++){
+			if (c == sequence[i])
+				continue;
+			
+			c = sequence[i];
+			
+			this.swap(level, i, sequence);
+			this._permute(sequence, level+1, outArr);
+		}
+		for (var i = level; i < l-1; i++){
+			sequence[i] = sequence[i+1];
+		}
+		sequence[l-1] = c;
+	},
 
-def permutations(iterable, r=None):
-    pool = tuple(iterable)
-    n = len(pool)
-    r = n if r is None else r
-    for indices in product(range(n), repeat=r):
-        if len(set(indices)) == r:
-            yield tuple(pool[i] for i in indices)
-The number of items returned is n! / (n-r)! when 0 <= r <= n or zero when r > n.
-
-New in version 2.6.
 
 itertools.product(*iterables[, repeat])
+---------------------------------------
+
 Cartesian product of input iterables.
 
-Equivalent to nested for-loops in a generator expression. For example, product(A, B) returns the same as ((x,y) for x in A for y in B).
+Equivalent to nested for-loops in a generator expression. 
+For example, product(A, B) returns the same as ((x,y) for x in A for y in B).
 
-The nested loops cycle like an odometer with the rightmost element advancing on every iteration. This pattern creates a lexicographic ordering so that if the input’s iterables are sorted, the product tuples are emitted in sorted order.
+The nested loops cycle like an odometer with the rightmost 
+element advancing on every iteration. This pattern creates 
+a lexicographic ordering so that if the input’s iterables are 
+sorted, the product tuples are emitted in sorted order.
 
-To compute the product of an iterable with itself, specify the number of repetitions with the optional repeat keyword argument. For example, product(A, repeat=4) means the same as product(A, A, A, A).
+To compute the product of an iterable with itself, specify the
+number of repetitions with the optional repeat keyword argument.
+For example, product(A, repeat=4) means the same as product(A, A, A, A).
 
-This function is equivalent to the following code, except that the actual implementation does not build up intermediate results in memory:
+This function is equivalent to the following code, except that
+the actual implementation does not build up intermediate results in memory:
 
-def product(*args, **kwds):
-    # product('ABCD', 'xy') --> Ax Ay Bx By Cx Cy Dx Dy
-    # product(range(2), repeat=3) --> 000 001 010 011 100 101 110 111
-    pools = map(tuple, args) * kwds.get('repeat', 1)
-    result = [[]]
-    for pool in pools:
-        result = [x+[y] for x in result for y in pool]
-    for prod in result:
-        yield tuple(prod)
-New in version 2.6.
+	product: function(){
+		//@TODO
+	},
 
 itertools.repeat(object[, times])
 Make an iterator that returns object over and over again. Runs indefinitely unless the times argument is specified. Used as argument to imap() for invariant function parameters. Also used with izip() to create constant fields in a tuple record. Equivalent to:
