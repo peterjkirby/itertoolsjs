@@ -16,7 +16,7 @@ MeyerWeb Reset
 .social-icons-wrapper{
 	float:right;
 }
-.social-icons{
+.social-icons li{
 	list-style: none;
 	float:left;
 }
