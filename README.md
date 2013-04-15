@@ -77,96 +77,111 @@ izip() to add sequence numbers. Equivalent to:
 		
 		return iterator;		
 	},
-When counting with floating point numbers, better accuracy can sometimes be achieved by substituting multiplicative code such as: (start + step * i for i in count()).
-
-Changed in version 2.7: added step argument and allowed non-integer arguments.
 
 itertools.cycle(iterable)
-Make an iterator returning elements from the iterable and saving a copy of each. When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely. Equivalent to:
+-------------------------
 
-def cycle(iterable):
-    # cycle('ABCD') --> A B C D A B C D A B C D ...
-    saved = []
-    for element in iterable:
-        yield element
-        saved.append(element)
-    while saved:
-        for element in saved:
-              yield element
+Make an iterator returning elements from the iterable and saving a copy of each. 
+When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely. 
+
+	cycle: function(iterable){
+		var iterator = new Iterator(iterable, true);
+		
+		iterator.next = function(){
+			if(this.index+1 >= this.items.length){
+				this.reset();
+			}
+			
+			return this.items[++this.index];
+		};
+		
+		return iterator;
+	},
+	
 Note, this member of the toolkit may require significant auxiliary storage (depending on the length of the iterable).
 
 itertools.dropwhile(predicate, iterable)
-Make an iterator that drops elements from the iterable as long as the predicate is true; afterwards, returns every element. Note, the iterator does not produce any output until the predicate first becomes false, so it may have a lengthy start-up time. Equivalent to:
+----------------------------------------
 
-def dropwhile(predicate, iterable):
-    # dropwhile(lambda x: x<5, [1,4,6,4,1]) --> 6 4 1
-    iterable = iter(iterable)
-    for x in iterable:
-        if not predicate(x):
-            yield x
-            break
-    for x in iterable:
-        yield x
+Make an iterator that drops elements from the iterable as long as the predicate
+is true; afterwards, returns every element. Note, the iterator does not produce any 
+output until the predicate first becomes false, so it may have a lengthy start-up time.
+
+	dropWhile: function(predicate, iterable){
+		//@TODO
+	},
+        
+        
 itertools.groupby(iterable[, key])
-Make an iterator that returns consecutive keys and groups from the iterable. The key is a function computing a key value for each element. If not specified or is None, key defaults to an identity function and returns the element unchanged. Generally, the iterable needs to already be sorted on the same key function.
+----------------------------------
 
-The operation of groupby() is similar to the uniq filter in Unix. It generates a break or new group every time the value of the key function changes (which is why it is usually necessary to have sorted the data using the same key function). That behavior differs from SQL’s GROUP BY which aggregates common elements regardless of their input order.
+Make an iterator that returns consecutive keys and groups from the iterable. 
+The key is a function computing a key value for each element. If not specified
+or is None, key defaults to an identity function and returns the element unchanged. 
+Generally, the iterable needs to already be sorted on the same key function.
 
-The returned group is itself an iterator that shares the underlying iterable with groupby(). Because the source is shared, when the groupby() object is advanced, the previous group is no longer visible. So, if that data is needed later, it should be stored as a list:
+The operation of groupby() is similar to the uniq filter in Unix. It generates 
+a break or new group every time the value of the key function changes (which is 
+why it is usually necessary to have sorted the data using the same key function). 
+That behavior differs from SQL’s GROUP BY which aggregates common elements regardless 
+of their input order.
 
-groups = []
-uniquekeys = []
-data = sorted(data, key=keyfunc)
-for k, g in groupby(data, keyfunc):
-    groups.append(list(g))      # Store group iterator as a list
-    uniquekeys.append(k)
-groupby() is equivalent to:
+The returned group is itself an iterator that shares the underlying iterable with 
+groupby(). Because the source is shared, when the groupby() object is advanced, the 
+previous group is no longer visible. So, if that data is needed later, it should be 
+stored as a list.
 
-class groupby(object):
-    # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
-    # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
-    def __init__(self, iterable, key=None):
-        if key is None:
-            key = lambda x: x
-        self.keyfunc = key
-        self.it = iter(iterable)
-        self.tgtkey = self.currkey = self.currvalue = object()
-    def __iter__(self):
-        return self
-    def next(self):
-        while self.currkey == self.tgtkey:
-            self.currvalue = next(self.it)    # Exit on StopIteration
-            self.currkey = self.keyfunc(self.currvalue)
-        self.tgtkey = self.currkey
-        return (self.currkey, self._grouper(self.tgtkey))
-    def _grouper(self, tgtkey):
-        while self.currkey == tgtkey:
-            yield self.currvalue
-            self.currvalue = next(self.it)    # Exit on StopIteration
-            self.currkey = self.keyfunc(self.currvalue)
-New in version 2.4.
+	groupBy: function(){
+		//@TODO
+	},
+
 
 itertools.ifilter(predicate, iterable)
-Make an iterator that filters elements from iterable returning only those for which the predicate is True. If predicate is None, return the items that are true. Equivalent to:
+--------------------------------------
 
-def ifilter(predicate, iterable):
-    # ifilter(lambda x: x%2, range(10)) --> 1 3 5 7 9
-    if predicate is None:
-        predicate = bool
-    for x in iterable:
-        if predicate(x):
-            yield x
+Make an iterator that filters elements from iterable returning only those 
+for which the predicate is True. If predicate is None, return the items that 
+are true. 
+
+	iFilter: function(predicate, iterable){
+		if (typeof predicate === 'undefined')
+			predicate = function(x){return Boolean(x)};
+		
+		var iterator = new Iterator(iterable);
+		
+		iterator.next =  function(){
+						
+			if(this.index+1 >= this.items.length)
+				return undefined;
+			
+			var next_item;
+			
+			while(this.index+1 < this.items.length){
+				next_item = this.items[++this.index];
+				if (predicate(next_item)){
+					return next_item;
+				}
+			}
+			
+			return undefined;
+		};
+		
+		return iterator;
+	},
+	
 itertools.ifilterfalse(predicate, iterable)
-Make an iterator that filters elements from iterable returning only those for which the predicate is False. If predicate is None, return the items that are false. Equivalent to:
+-------------------------------------------
 
-def ifilterfalse(predicate, iterable):
-    # ifilterfalse(lambda x: x%2, range(10)) --> 0 2 4 6 8
-    if predicate is None:
-        predicate = bool
-    for x in iterable:
-        if not predicate(x):
-            yield x
+Make an iterator that filters elements from iterable returning only
+those for which the predicate is False. If predicate is None, return 
+the items that are false. Equivalent to:
+
+	iFilterFalse: function(){
+		//@TODO
+	},
+
 itertools.imap(function, *iterables)
+------------------------------------
 Make an iterator that computes the function using arguments from each of the iterables. If function is set to None, then imap() returns the arguments as a tuple. Like map() but stops when the shortest iterable is exhausted instead of filling in None for shorter iterables. The reason for the difference is that infinite iterator arguments are typically an error for map() (because the output is fully evaluated) but represent a common and useful way of supplying arguments to imap(). Equivalent to:
 
 def imap(function, *iterables):
