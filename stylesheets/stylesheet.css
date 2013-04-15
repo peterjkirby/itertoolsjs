@@ -9,6 +9,10 @@ by Jason Costello, @jsncostello
 MeyerWeb Reset
 *******************************************************************************/
 
+.copyright-wrapper{
+	float:left;
+}
+
 .social-icons-wrapper{
 	float:right;
 }
