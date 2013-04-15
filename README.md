@@ -1,5 +1,13 @@
-itertoolsjs
+itertoolsJS
 ===========
+
+ItertoolsJS is inspired by the python Itertools library at http://docs.python.org/2/library/itertools.html
+
+I am in the process of optimizing and adding more functionality.
+
+The majority of the documentation at this time is an exact replica of the python Itertools documentation.
+
+I will correct the documentation once I have finished the ItertoolsJS library
 
 The following module functions all construct and return iterators. 
 Some provide streams of infinite length, so they should only be accessed by functions 
