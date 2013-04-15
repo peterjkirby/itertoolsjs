@@ -19,6 +19,9 @@ MeyerWeb Reset
 .social-icons li{
 	list-style: none;
 	float:left;
+	box-shadow:none;
+	border: none;
+	width: 48px;
 }
 
 
