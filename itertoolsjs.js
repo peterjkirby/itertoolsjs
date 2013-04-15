@@ -132,12 +132,12 @@ itertools.prototype = {
 		
 		iterator.each(function(item, i){
 			for (var j = k; j <= iterator.length-r+1; j++){
-				results.push(item+iterator.splice(j, r-1).join(''))	
+				results.push(item+iterator.splice(j, r-1));
 			}
 			k++;
-		}, this)
+		}, this);
 		
-		return results		
+		return results;		
 	},
 	
 	compress: function(){
@@ -151,15 +151,15 @@ itertools.prototype = {
 		if (typeof step === 'undefined')
 			step = 1;
 		
-		var iterator = new Iterator()
-		iterator.items = start
+		var iterator = new Iterator();
+		iterator.items = start;
 		
 		iterator.next = function(){
 			var rtnNum = this.items; // do I really want to place a counter
 										// here?
 			this.items += step;
 			return rtnNum;
-		}
+		};
 		
 		return iterator;		
 	},
@@ -178,34 +178,46 @@ itertools.prototype = {
 		return iterator;
 	},
 	
-	iFilter: function(iterable, predicate){
+	dropWhile: function(predicate, iterable){
+		//@TODO
+	},
+	
+	groupBy: function(){
+		//@TODO
+	},
+	
+	iFilter: function(predicate, iterable){
 		if (typeof predicate === 'undefined')
-			predicate = function(x){return Boolean(x)}
+			predicate = function(x){return Boolean(x)};
 		
-		var iterator = new Iterator(iterable)
+		var iterator = new Iterator(iterable);
 		
 		iterator.next =  function(){
 						
 			if(this.index+1 >= this.items.length)
-				return undefined
+				return undefined;
 			
 			var next_item;
 			
 			while(this.index+1 < this.items.length){
 				next_item = this.items[++this.index];
 				if (predicate(next_item)){
-					return next_item
+					return next_item;
 				}
 			}
 			
-			return undefined
-		}
+			return undefined;
+		};
 		
 		return iterator;
 	},
 	
+	iFilterFalse: function(){
+		//@TODO
+	},
+	
 	iMap: function(){
-		
+		//@TODO
 	},	
 	
 	iSlice: function(iterable, start_or_stop, stop, step){
@@ -222,36 +234,36 @@ itertools.prototype = {
 			
 			iterator.next = function(){
 				if (this.index+1 >= this.items.length || this.index+1 >= stop)
-					return undefined
+					return undefined;
 				
-				return this.items[++this.index]
+				return this.items[++this.index];
 				
 			}
 		} else if (stop === null){
 			iterator.index = start_or_stop-step;
 			iterator.next = function(){
 				if(this.index+1 >= this.items.length)
-					return undefined			
+					return undefined;		
 				
 				this.index += step
 				return this.items[this.index];
-			}	
+			};	
 		} else {
 			iterator.index = start_or_stop-step;
 			iterator.next = function(){
 				if (this.index+1 >= this.items.length || this.index+1 >= stop)
-					return undefined
+					return undefined;
 					
-				this.index += step
+				this.index += step;
 				return this.items[this.index];
-			}
+			};
 		}
 		
-		return iterator
+		return iterator;
 	},
 	
 	iZip: function(){
-		
+		//@TODO
 	},
 	
 	permutations: function(sequence){
@@ -260,7 +272,7 @@ itertools.prototype = {
 			results = [];
 		
 		if (typeof sequence == 'number'){
-			sequence = sequence.toString()
+			sequence = sequence.toString();
 			isNumber = true;
 		}
 		
@@ -281,16 +293,16 @@ itertools.prototype = {
 				results[perm] = parseFloat(results[perm]);				
 		}
 		
-		return results
+		return results;
 	},
 
 	_permute: function(sequence, level, outArr){
 	
-		var l = sequence.length
+		var l = sequence.length;
 		var c = null;
 		
 		if (l == level){
-			outArr.push(this._copy(sequence))
+			outArr.push(this._copy(sequence));
 			return
 		}
 			
@@ -300,78 +312,83 @@ itertools.prototype = {
 			
 			c = sequence[i];
 			
-			this.swap(level, i, sequence)
-			this._permute(sequence, level+1, outArr)
+			this.swap(level, i, sequence);
+			this._permute(sequence, level+1, outArr);
 		}
 		for (var i = level; i < l-1; i++){
-			sequence[i] = sequence[i+1]
+			sequence[i] = sequence[i+1];
 		}
-		sequence[l-1] = c
+		sequence[l-1] = c;
 	},
 	
-	product: function(){}, // @TODO
+	product: function(){
+		//@TODO
+	},
 	
 	repeat: function(obj, times){
 		if(typeof times === 'undefined')
-			times = true
+			times = true;
 		
-		var iterator = new Iterator()
+		var iterator = new Iterator();
 		// @TODO
 		// Don't set items this way... Figure out better way to do this
-		iterator.items = obj
+		iterator.items = obj;
 		if (times === true){
 			iterator.next = function(){
-				return this.items
+				return this.items;
 			}
-			return iterator
+			return iterator;
 		}
 		iterator.index = 0;
 		
 		iterator.next = function(){
 			if (this.index >= times)
-				return undefined
+				return undefined;
 			
-			this.index++
-			return this.items
+			this.index++;
+			return this.items;
 		}
 		
-		return iterator
+		return iterator;
 	},
 	
 	starMap: function(fn, iterable){
 		
-		var iterator = new Iterator(iterable)
+		var iterator = new Iterator(iterable);
 		
 		iterator.next = function(){
 			if (this.index+1 >= this.items.length)
-				return undefined
+				return undefined;
 
-			return fn.apply(this, this.items[++this.index])
-		}
+			return fn.apply(this, this.items[++this.index]);
+		};
 		
-		return iterator
+		return iterator;
 	},
 	
 	takeWhile: function(predicate, iterable){
 		
-		var iterator = new Iterator(iterable)
-		this.wasPredicateTrue = true // starts true... probably not best to
+		var iterator = new Iterator(iterable);
+		this.wasPredicateTrue = true; // starts true... probably not best to
 										// do that
 		
 		iterator.next = function(){
 			if (this.index+1 >= this.items.length && this.wasPredicateTrue)
-				return undefined
+				return undefined;
 			
-			var rtnVal = this.items[++this.index]
+			var rtnVal = this.items[++this.index];
 			
 			if(predicate(rtnVal))
-				return rtnVal
+				return rtnVal;
 			
 			this.wasPredicateTrue = false;
-		}
+		};
 		
 		return iterator;		
-		
+	},
+	
+	tee: function(iterable){
+		//@TODO
 	},
 	
 	swap: function(i, j, arr){
