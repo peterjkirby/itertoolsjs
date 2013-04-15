@@ -2,3 +2,4 @@
 # eclipse project files
 .project
 .pydevproject
+.settings/
