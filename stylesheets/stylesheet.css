@@ -24,6 +24,12 @@ MeyerWeb Reset
 	width: 48px;
 }
 
+.social-icons li a{
+	box-shadow:none;
+	border: none;
+	
+}
+
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
