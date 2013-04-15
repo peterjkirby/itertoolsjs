@@ -21,7 +21,6 @@ MeyerWeb Reset
 	float:left;
 	box-shadow:none;
 	border: none;
-	width: 48px;
 }
 
 .social-icons li a{
@@ -30,7 +29,8 @@ MeyerWeb Reset
 }
 
 .social-icons li a img{
-	border: none;	
+	border: none;
+	width: 48px;	
 }
 
 
