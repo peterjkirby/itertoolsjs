@@ -26,9 +26,15 @@ MeyerWeb Reset
 
 .social-icons li a{
 	box-shadow:none;
-	border: none;
-	
+	border: none;	
 }
+
+.social-icons li a img{
+	border: none;	
+}
+
+
+
 
 
 html, body, div, span, applet, object, iframe,
