@@ -1,8 +1,6 @@
 itertoolsjs
 ===========
 
-ItertoolsJs
-
 The following module functions all construct and return iterators. 
 Some provide streams of infinite length, so they should only be accessed by functions 
 or loops that truncate the stream.
@@ -100,7 +98,7 @@ When the iterable is exhausted, return elements from the saved copy. Repeats ind
 	
 Note, this member of the toolkit may require significant auxiliary storage (depending on the length of the iterable).
 
-itertools.dropwhile(predicate, iterable)
+itertools.dropWhile(predicate, iterable)
 ----------------------------------------
 
 Make an iterator that drops elements from the iterable as long as the predicate
@@ -112,7 +110,7 @@ output until the predicate first becomes false, so it may have a lengthy start-u
 	},
         
         
-itertools.groupby(iterable[, key])
+itertools.groupBy(iterable[, key])
 ----------------------------------
 
 Make an iterator that returns consecutive keys and groups from the iterable. 
@@ -136,7 +134,7 @@ stored as a list.
 	},
 
 
-itertools.ifilter(predicate, iterable)
+itertools.iFilter(predicate, iterable)
 --------------------------------------
 
 Make an iterator that filters elements from iterable returning only those 
@@ -169,7 +167,7 @@ are true.
 		return iterator;
 	},
 	
-itertools.ifilterfalse(predicate, iterable)
+itertools.iFilterFalse(predicate, iterable)
 -------------------------------------------
 
 Make an iterator that filters elements from iterable returning only
@@ -180,7 +178,7 @@ the items that are false. Equivalent to:
 		//@TODO
 	},
 
-itertools.imap(function, *iterables)
+itertools.iMap(function, *iterables)
 ------------------------------------
 Make an iterator that computes the function using arguments from each of the iterables. If function is set to None, then imap() returns the arguments as a tuple. Like map() but stops when the shortest iterable is exhausted instead of filling in None for shorter iterables. The reason for the difference is that infinite iterator arguments are typically an error for map() (because the output is fully evaluated) but represent a common and useful way of supplying arguments to imap(). Equivalent to:
 
@@ -188,8 +186,8 @@ Make an iterator that computes the function using arguments from each of the ite
 		//@TODO
 	},	
 	
-itertools.islice(iterable, stop)
-itertools.islice(iterable, start, stop[, step])
+itertools.iSlice(iterable, stop)
+itertools.iSlice(iterable, start, stop[, step])
 Make an iterator that returns selected elements from the iterable. If start is non-zero, then elements from the iterable are skipped until start is reached. Afterward, elements are returned consecutively unless step is set higher than one which results in items being skipped. If stop is None, then iteration continues until the iterator is exhausted, if at all; otherwise, it stops at the specified position. Unlike regular slicing, islice() does not support negative values for start, stop, or step. Can be used to extract related fields from data where the internal structure has been flattened (for example, a multi-line report may list a name field on every third line). Equivalent to:
 
 	iSlice: function(iterable, start_or_stop, stop, step){
@@ -236,7 +234,7 @@ Make an iterator that returns selected elements from the iterable. If start is n
 	
 If start is None, then iteration starts at zero. If step is None, then the step defaults to one.
 
-itertools.izip(iterables)
+itertools.iZip(iterables)
 -------------------------
 
 Make an iterator that aggregates elements from each of the iterables. 
@@ -381,7 +379,7 @@ Make an iterator that returns object over and over again. Runs indefinitely unle
 	
 A common use for repeat is to supply a stream of constant values to imap or zip:
 
-itertools.starmap(function, iterable)
+itertools.starMap(function, iterable)
 -------------------------------------
 
 Make an iterator that computes the function using arguments
@@ -404,7 +402,7 @@ starmap() parallels the distinction between function(a,b) and function(*c).
 		return iterator;
 	},
 	
-itertools.takewhile(predicate, iterable)
+itertools.takeWhile(predicate, iterable)
 ----------------------------------------
 
 Make an iterator that returns elements from the iterable as long as the predicate is true.
